@@ -67,7 +67,7 @@ function AddData() {
             <div className="relative mt-1 rounded-xl ">
               <input
                 type="text"
-                className="uppercase w-80 sm:w-64 font-avanir shadow-sm outline-slate-500 rounded-sm border border-slate-400 pl-2 py-1 font-sans mt-2 pr-5 focus:border-orange-400 focus:ring-orange-400 sm:text-sm"
+                className="w-80 sm:w-64 font-avanir shadow-sm outline-slate-500 rounded-sm border border-slate-400 pl-2 py-1 font-sans mt-2 pr-5 focus:border-orange-400 focus:ring-orange-400 sm:text-sm"
                 name='id_register'
                 onChange={handleChange}
               />

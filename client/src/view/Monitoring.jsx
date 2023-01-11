@@ -77,7 +77,7 @@ function Monitoring() {
           <div className="relative lg:mt-1 rounded-md ">
             <input
               type="text"
-              className="uppercase w-80  shadow-sm font-avanir outline-orange-400 rounded-md  pl-2 py-2 font-sans mt-2 pr-5 focus:border-orange-400 focus:ring-orange-400 sm:text-[12px] sm:w-56 md:w-80 lg:text-[15px]"  
+              className="w-80  shadow-sm font-avanir outline-orange-400 rounded-md  pl-2 py-2 font-sans mt-2 pr-5 focus:border-orange-400 focus:ring-orange-400 sm:text-[12px] sm:w-56 md:w-80 lg:text-[15px]"  
               name="id_register"
               onChange={handleChange}
               placeholder="ID Register Terdaftar"
