@@ -15,7 +15,7 @@ export default function Alerts({ show, title, color }) {
         // dismissible={{
         //   onClose: () => setShow(false),
         // }}
-        className="fixed-top w-9/12 mx-48"
+        className="fixed w-9/12 mx-48"
         color={color}
       >
         {title}
