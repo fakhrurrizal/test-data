@@ -3,8 +3,15 @@ import { useNavigate, useParams } from "react-router"
 import { useMutation, useQuery } from "react-query"
 import { Link } from 'react-router-dom'
 import { API } from "../config/api"
+import Alerts from '../components/Alert'
 
 function EditData() {
+
+  const [show, setShow] = useState(false);
+  const [alert, setAlert] = useState("");
+  const [title, setTitle] = useState("");
+
+
   const navigate = useNavigate()
   const { id } = useParams()
   
@@ -64,17 +71,30 @@ function EditData() {
           "/motor/" + id,
           formData
         )
-        alert("Data Berhasil Diubah");
-        navigate("/")
+        if (response.status === 200) {
+          setShow(true);
+          setTitle("Success Edit Data");
+          setAlert("green");
+          setTimeout(() => {
+            setShow(false);
+            navigate("/");
+          }, 2000);
+          // navigate("/")
+        }
       }catch(error){
-        console.log(error)
-        alert("Failed Add Category");
+        setShow(true);
+        setTitle("Edit Data Failed");
+        setAlert("red");
+        setTimeout(() => {
+        setShow(false);
+      }, 2000);
       }
     }
   )
 
   return (
     <>
+    <Alerts show={show} setShow={setShow} title={title} color={alert} />
     <div className="w-4/5 m-auto ">
       <h2 className="mt-10 font-bold font-avanir text-2xl mb-8"> Edit Data Kendaraan</h2>
       <form className=' border border-2 border-slate-400 rounded-sm p-10 mb-40'

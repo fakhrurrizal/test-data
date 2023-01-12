@@ -5,6 +5,9 @@ import { API } from '../config/api'
 import Alerts from '../components/Alert'
 
 function AddData() {
+  const [show, setShow] = useState(false);
+  const [alert, setAlert] = useState("");
+  const [title, setTitle] = useState("");
 
   const [form,setForm] = useState({
     id_register: "",
@@ -43,19 +46,31 @@ function AddData() {
         formData.set("fuel", form.fuel)
 
         const response = await API.post("/motor", formData)
-        console.log("ini data",response.data.data)
-        alert("Data Berhasil Ditambah");
-        navigate("/")
+        if (response.status === 200) {
+          setShow(true);
+          setTitle("Success Add Data");
+          setAlert("green");
+          setTimeout(() => {
+            setShow(false);
+            navigate("/");
+          }, 2000);
+          // navigate("/")
+        }
+        
       }catch(error){
-        console.log(error)
-        alert("Failed Add Data");
+        setShow(true);
+        setTitle("Add Data Failed");
+        setAlert("red");
+        setTimeout(() => {
+        setShow(false);
+      }, 2000);
       }
     }
   )
 
   return (
     <>
-    
+    <Alerts show={show} setShow={setShow} title={title} color={alert} />
     <div className="lg:w-4/5 lg:m-auto sm:w-full sm:ml-0 sm:p-3 ">
       <h2 className="mt-10 font-bold font-avanir text-2xl mb-8 sm:text-xl"> Tambah Data Kendaraan</h2>
       <form className=' border border-2 border-slate-800 rounded-sm p-10 mb-40 sm:p-4'
@@ -175,8 +190,8 @@ function AddData() {
           </Link>
         </div>
       </form>
-      
     </div>
+
     </>
   )
 }

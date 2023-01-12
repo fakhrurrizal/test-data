@@ -1,20 +1,10 @@
 import { useState, Fragment } from "react";
-import { Alert, Button } from "@material-tailwind/react";
+import { Alert} from "@material-tailwind/react";
  
-export default function Alerts() {
-  const [show, setShow] = useState(true);
- 
+export default function Alerts({ show, title, color }) {
+
   return (
     <Fragment>
-      {/* {!show && (
-        <Button
-          variant="gradient"
-          className="absolute"
-          onClick={() => setShow(true)}
-        >
-          Show Alert
-        </Button>
-      )} */}
       <Alert
      
         show={show}
@@ -22,11 +12,13 @@ export default function Alerts() {
           mount: { y: 0 },
           unmount: { y: 100 },
         }}
-        dismissible={{
-          onClose: () => setShow(false),
-        }}
+        // dismissible={{
+        //   onClose: () => setShow(false),
+        // }}
+        className="fixed-top w-9/12 mx-48"
+        color={color}
       >
-        A dismissible alert with custom animation.
+        {title}
       </Alert>
     </Fragment>
   );
