@@ -1,7 +1,7 @@
 import { Fragment, useRef, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 
-export default function Delete({ show,handleClose, data,  setConfirmDelete}) {
+export default function Delete({ data, show,handleClose, setConfirmDelete}) {
   const handleDelete = () => {
     setConfirmDelete(true)
   }
@@ -43,8 +43,8 @@ export default function Delete({ show,handleClose, data,  setConfirmDelete}) {
                         Hapus Data
                       </Dialog.Title>
                       <div className="mt-2">
-                        <p className="text-md  font-avanir text-gray-500">
-                        Apakah ingin menghapus data {data?.id_register} ? 
+                        <p className="text-md  font-avanir text-gr  ay-500">
+                        Apakah ingin menghapus data <span className='font-bold'>{data}</span> ? 
                         </p>
                       </div>
                     </div>

@@ -1,23 +1,24 @@
-import React, {useState, useEffect} from 'react'
-import { useQuery } from 'react-query'
-import { Link } from 'react-router-dom'
-import { useMutation } from 'react-query';
-import { API } from '../config/api'
+import React, { useEffect, useState } from 'react';
+import { useMutation, useQuery } from 'react-query';
+import { Link, useNavigate } from 'react-router-dom';
 import Delete from '../components/Delete';
-import { useNavigate } from "react-router-dom"
+import { API } from '../config/api';
 
 function Monitoring() {
   const [idDelete, setIdDelete] = useState(null)
   const [confirmDelete, setConfirmDelete] = useState(null)
-  const [showPopup, setShowPopup] = useState(false);
+  const [register, setRegister] = useState(null)
+
 
   const [show, setShow] = useState(false)
   const handleClose = () => setShow(false)
   const handleShow = () => setShow(true)
   const [result, setResult] = useState([]);
 
-  const handleDelete = (id) => {
+  // Menampilkan modal delete 
+  const handleDelete = (id, id_register) => {
     setIdDelete(id)
+    setRegister(id_register)
     handleShow()
   }
 
@@ -29,7 +30,7 @@ function Monitoring() {
   const handleChange = (e) => {
     setForm({
       ...form,
-      [e.target.name]: e.target.value.toUpperCase(),
+      [e.target.name]: e.target.value
     });
   };
   const navigate = useNavigate()
@@ -42,13 +43,14 @@ function Monitoring() {
     setResult({...result, data})
   };
   
+    // Fetching data motor
+    let { data: motors, refetch } = useQuery("motorCaches",
+      async() => {
+        const response = await API.get("/motors")
+        return response.data.data
+      })
 
-  let { data: motors, refetch } = useQuery("motorCaches",
-    async() => {
-      const response = await API.get("/motors")
-      return response.data.data
-    })
-
+    // Mengahapus data berdasarkan ID
     const deleteById = useMutation(async (id) => {
       try {
         await API.delete(`/motor/${id}`)
@@ -108,50 +110,50 @@ function Monitoring() {
     
     {/* ------------------------------------------------Table------------------------------------------------ */}
     
-    <div class="overflow-auto rounded-lg mb-32 mt-32 w-4/5 m-auto shadow hidden md:block">
-      <table class="w-full">
-        <thead class="font-avanir bg-blue-400 border-b-2 border-gray-200 text-left">
+    <div className="overflow-auto rounded-lg mb-32 mt-32 w-4/5 m-auto shadow hidden md:block">
+      <table className="w-full">
+        <thead className="font-avanir bg-blue-400 border-b-2 border-gray-200 text-left">
         <tr>
-          <th class="w-10 p-3 text-sm font-semibold tracking-wide ">No</th>
-          <th class="w-26 p-3 text-sm font-semibold tracking-wide ">No Registrasi</th>
-          <th class="w-28 p-3 text-sm font-semibold tracking-wide ">Nama Pemilik</th>
-          <th class="w-40 p-3 text-sm font-semibold tracking-wide ">Merk Kendaraan</th>
-          <th class="w-44 p-3 text-sm font-semibold tracking-wide ">Tahun Pembuatan</th>
-          <th class="w-26 p-3 text-sm font-semibold tracking-wide ">Kapasitas</th>
-          <th class="w-26 p-3 text-sm font-semibold tracking-wide ">Warna</th>
-          <th class="w-32 p-3 text-sm font-semibold tracking-wide ">Bahan Bakar</th>
-          <th class="w-40 p-3 text-sm font-semibold tracking-wide ">Action</th>
+          <th className="w-10 p-3 text-sm font-semibold tracking-wide ">No</th>
+          <th className="w-26 p-3 text-sm font-semibold tracking-wide ">No Registrasi</th>
+          <th className="w-28 p-3 text-sm font-semibold tracking-wide ">Nama Pemilik</th>
+          <th className="w-40 p-3 text-sm font-semibold tracking-wide ">Merk Kendaraan</th>
+          <th className="w-44 p-3 text-sm font-semibold tracking-wide ">Tahun Pembuatan</th>
+          <th className="w-26 p-3 text-sm font-semibold tracking-wide ">Kapasitas</th>
+          <th className="w-26 p-3 text-sm font-semibold tracking-wide ">Warna</th>
+          <th className="w-32 p-3 text-sm font-semibold tracking-wide ">Bahan Bakar</th>
+          <th className="w-40 p-3 text-sm font-semibold tracking-wide ">Action</th>
         </tr>
         </thead>
-        <tbody class="divide-y divide-gray-100 text-left">
+        <tbody className="divide-y divide-gray-100 text-left">
          {
          result?.length === 0 ?
          motors?.map((e, index) => (
-            <tr  class="bg-white hover:bg-slate-200 delay-75 font-avanir ">
-              <td key={index} class="p-3 text-sm text-gray-700 whitespace-nowrap">
+            <tr className="bg-slate-200 delay-75 font-avanir ">
+              <td key={index} className="p-3 text-sm text-gray-700 whitespace-nowrap">
                 {index + 1}
               </td>
-              <td class="p-3 text-sm text-gray-700 whitespace-nowrap">
+              <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
                 {e.id_register}
               </td>
-              <td class="p-3 text-sm text-gray-700 whitespace-nowrap">
+              <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
                 {e.name}
               </td>
-              <td class="p-3 text-sm text-gray-700 whitespace-nowrap">{e.brand}</td>
-              <td class="p-3 text-sm text-gray-700 whitespace-nowrap">{e.production_year}</td>
-              <td class="p-3 text-sm text-gray-700 whitespace-nowrap">{e.cylinder_capacity} CC</td>
-              <td class="p-3 text-sm text-gray-700 whitespace-nowrap">{e.color}</td>
-              <td class="p-3 text-sm text-gray-700 whitespace-nowrap">{e.fuel}</td>
-              <td class="p-3 text-sm text-gray-700 whitespace-nowrap">
-                <button className='mx-1 text-orange-500 font-bold hover:text-orange-600'
+              <td className="p-3 text-sm text-gray-700 whitespace-nowrap">{e.brand}</td>
+              <td className="p-3 text-sm text-gray-700 whitespace-nowrap">{e.production_year}</td>
+              <td className="p-3 text-sm text-gray-700 whitespace-nowrap">{e.cylinder_capacity} CC</td>
+              <td className="p-3 text-sm text-gray-700 whitespace-nowrap">{e.color}</td>
+              <td className="p-3 text-sm text-gray-700 whitespace-nowrap">{e.fuel}</td>
+              <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
+                <button className='mx-1 text-orange-500 font-bold hover:text-orange-800'
                   onClick={() => {navigate(`/detail-motor/${e.id}`)}}
                 >Detail</button>
-                <button className='mx-1 text-sky-500 font-bold hover:text-sky-600'
+                <button className='mx-1 text-sky-500 font-bold hover:text-sky-800'
                   onClick={() => {navigate(`/update-motor/${e.id}`)}}
                 >Edit</button>
-                <button className='mx-1 text-red-600 font-bold hover:text-red-700'
+                <button className='mx-1 text-red-600 font-bold hover:text-red-800'
                  onClick={() => {
-                  handleDelete(e?.id)
+                  handleDelete(e?.id, e?.id_register)
                 }}
                 >Delete</button>
               </td>
@@ -182,7 +184,7 @@ function Monitoring() {
                 >Edit</button>
                 <button className='mx-1 text-red-600 font-bold hover:text-red-700'
                  onClick={() => {
-                  handleDelete(e?.id)
+                  handleDelete(e?.id, e?.id_register)
                 }}
                 >Delete</button>
               </td>
@@ -195,7 +197,7 @@ function Monitoring() {
        setConfirmDelete={setConfirmDelete}
        show={show}
        handleClose={handleClose}
-       data={motors} 
+       data={register} 
       />
       
     </div>
