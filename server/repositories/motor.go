@@ -13,6 +13,7 @@ type MotorRepository interface {
 	UpdateMotor(motor models.Motor) (models.Motor, error)
 	DeleteMotor(motor models.Motor) (models.Motor, error)
 	FilterMotor(id_register string, name string) ([]models.Motor, error)
+	CreatedMotor(id_register string) (models.Motor, error)
 }
 
 func RepositoryMotor(db *gorm.DB) *repository {
@@ -52,5 +53,11 @@ func (r *repository) DeleteMotor(motor models.Motor) (models.Motor, error) {
 func (r *repository) FilterMotor(id_register string, name string) ([]models.Motor, error) {
 	var motor []models.Motor
 	err := r.db.Where("id_register = ? OR name = ?", id_register, name).Find(&motor).Error
+	return motor, err
+}
+func (r *repository) CreatedMotor(id_register string) (models.Motor, error) {
+	var motor models.Motor
+	err := r.db.First(&motor, "id_register=?", id_register).Error
+
 	return motor, err
 }

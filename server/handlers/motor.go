@@ -82,6 +82,14 @@ func (h *handlerMotor) CreateMotor(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	noRegister, _ := h.MotorRepository.CreatedMotor(request.Id_Register)
+	if noRegister.Id_Register == request.Id_Register {
+		w.WriteHeader(http.StatusBadRequest)
+		response := result.ErrorResult{Status: "Failed", Message: "ID Register Already Registered"}
+		json.NewEncoder(w).Encode(response)
+		return
+	}
+
 	motor := models.Motor{
 		Id_Register:       request.Id_Register,
 		Name:              request.Name,
@@ -212,7 +220,7 @@ func (h *handlerMotor) FilterMotor(w http.ResponseWriter, r *http.Request) {
 	data, err := h.MotorRepository.FilterMotor(request.Id_Register, request.Name)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
-		response := result.ErrorResult{Status: "Gagal", Message: err.Error()}
+		response := result.ErrorResult{Status: "Gagal Filter", Message: err.Error()}
 		json.NewEncoder(w).Encode(response)
 		return
 	}
